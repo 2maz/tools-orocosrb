@@ -59,7 +59,7 @@ respectively represent the +canbus+ and +hokuyo+ processes.
 
 See the documentation of Orocos::Process for more details.
 
-== Getting a grasp on existing task contexts
+### Getting a grasp on existing task contexts
 
 You can grab an object represeting the remote RTT component with:
 
@@ -214,4 +214,33 @@ It is possible to connect ports using orocos.rb. Simply do:
 +policy+ is the connection. It is a hash whose arguments are the policy
 parameters. See Orocos::Port#validate_policy for an in-depth explanation of
 possible values.
+
+## Testing
+
+To run the test suite:
+```
+$> rake test
+```
+
+To run tests individually on a per file basis:
+```
+$> ruby -I . ./test/test_orocos.rb
+```
+
+To run tests individually on a per name basis using a matching regexp:
+```
+$> ruby -I . ./test/test_port.rb -n /creates/ --verbose
+use of MQueue disabled. Set USE_MQUEUE=1 to enable
+use of ROS disabled. Set USE_ROS=1 to enable
+Run options: -n /creates/ --verbose --seed 65206
+
+# Running:
+
+Orocos::Port::handle_mq_transport#test_0001_creates an updated policy = 0.07 s = .
+
+Finished in 0.068654s, 14.5659 runs/s, 14.5659 assertions/s.
+
+1 runs, 1 assertions, 0 failures, 0 errors, 0 skips
+
+```
 
