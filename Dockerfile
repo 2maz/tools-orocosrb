@@ -1,6 +1,5 @@
 FROM ubuntu:16.04
 
-MAINTAINER 2maz "https://github.com/2maz"
 
 RUN apt update
 RUN apt upgrade -y
@@ -31,8 +30,12 @@ COPY --chown=docker test/ci/autoproj-config.yml seed-config.yml
 ENV AUTOPROJ_BOOTSTRAP_IGNORE_NONEMPTY_DIR 1
 RUN ruby /home/docker/autoproj_bootstrap git https://github.com/rock-core/buildconf.git branch=master --seed-config=seed-config.yml
 RUN sed -i 's#rock\.core#tools/orocos.rb#g' autoproj/manifest
+RUN sed -i 's#rock-core/package_set#2maz/package_set#g' autoproj/manifest
+RUN sed -i 's#rock-core/rock-package_set#2maz/rock-package_set#g' autoproj/manifest
 # Activate testing
 RUN /bin/bash -c "source env.sh; autoproj test enable tools/orocos.rb"
 # Update
 RUN /bin/bash -c "source env.sh; autoproj update; autoproj osdeps"
-RUN /bin/bash -c "source env.sh; amake"
+# Making sure continuous output is generated so that the build is not aborted
+# by travis
+RUN /bin/bash -c "source env.sh; autoproj build --verbose tools/orocos.rb"
